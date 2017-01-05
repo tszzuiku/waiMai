@@ -9,12 +9,80 @@
 	<script type="text/javascript" src="js/rem.js"></script>
 </head>
 <body>
-	<div id="address" class="section"><a href="#rlist">地址搜索页</a></div>
-	<div id="detail" class="section"><a href="#address">餐厅详情页</a></div>
-	<div id="citylist" class="section"><a href="#search">城市选择页</a></div>
+	<div id="address" class="section">
+		<h1><a href="#rlist">地址搜索页</a></h1>
+		<h2 class="city-name"><a href="#citylist">上海</a></h2>
+		<div>
+			<input type="text" id="keyword">
+			<input class="btn" type="button" value="美团搜索">
+			<input class="btn" type="button" value="百度搜索">
+		</div>
+
+		<div class="cons"></div>
+
+	</div>
 	<div id="rlist" class="section"><a href="#detail">餐厅列表页</a></div>
+	<div id="detail" class="section"><a href="#citylist">餐厅详情页</a></div>
+	<div id="citylist" class="section">
+		
+		<div class="header">
+				
+			<p>
+				<a href="javascript:;">登录</a>
+				<span>|</span>
+				<a href="javascript:;">注册</a>
+			</p>
+
+		</div>
+
+		<div class="curCity">
+			
+			<div class="top">
+				<p>
+					<span class="txt1">当前定位城市</span>
+					<span class="txt2">定位不准时，请在城市列表中选择</span>
+				</p>
+			</div>
+			<div class="bottom">
+				
+				<span>上海</span>
+				<a href="javascript:;"></a>
+
+			</div>
+
+		</div>
+
+		<div class="hotCity item">
+			
+			<h2>热门城市</h2>
+
+			<ul class="hc_list">
+				
+			</ul>
+
+		</div>
+
+		<div class="citys">
+			
+			<!-- <div class="item">
+				<h2>A<span>(按字母排序)</span></h2>
+				<ul class="item_list"></ul>
+			</div> -->
+
+		</div>
+
+		
+
+	</div>
+
 	<script src="js/zepto.js"></script>
+	<script src="js/module/addressObj.js"></script>
+	<script src="js/module/citylistObj.js"></script>
+	<script src="js/module/detailObj.js"></script>
+	<script src="js/module/rlistObj.js"></script>
+	
 	<script src="js/index.js"></script>
+	
 </body>
 </body>
 </html>

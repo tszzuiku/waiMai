@@ -1,0 +1,40 @@
+html,body { height: 100%; width: 100%; overflow: auto; }
+body { font-size: 12px; background: #f2f2f2; }
+a { text-decoration: none; }
+
+
+.section { height: 100%; width: 100%;  display: none;}
+
+/*.section a{ color: #fff; font-size: 30px; font-weight: 900; margin-bottom: 0.5rem;}*/
+#address h1 { margin-bottom: 0.5rem; }
+#address h2 { color: #fff; }
+#address input {
+	width: 90%;
+    box-sizing: border-box;
+    height: 2rem;
+    margin-top: 1rem;
+}
+#address input.btn { width: 40%; }
+
+
+#citylist {}
+#citylist .header{ width: 100%; height: 1.1rem; background: #3199e8; margin-bottom: 0.25rem; }
+#citylist .header p{ width: 100%; height: 1.1rem; box-sizing: border-box; line-height: 1.1rem; text-align: right; padding-right: 0.325rem; background: url(../images/city_head_icon.png) no-repeat 0.25rem 0.325rem / 1.425rem 0.4rem; }
+#citylist .header p a{ color: #fff; }
+#citylist .header p span{ color: #fff; }
+#citylist .curCity { margin-bottom: 0.25rem; }
+#citylist .curCity .top{ width: 100%; }
+#citylist .curCity .top p{ height: 1.025rem; line-height: 0.975rem; box-sizing: border-box;  padding: 0 0.25rem; border: 1px solid #dddddd; background: #fff; border-left: none; border-right: none;}
+#citylist .curCity .top p span{ }
+#citylist .curCity .top p span.txt1{ float: left; color: #666666;}
+#citylist .curCity .top p span.txt2{ float: right; color: #999999;}
+#citylist .curCity .bottom {width: 100%; height: 1.175rem; box-sizing: border-box; background: #fff; border-bottom: 1px solid #ddd; line-height: 1.15rem; padding: 0 0.25rem;}
+#citylist .curCity .bottom span{ float: left; font-size: 20px; color: #0088cc; font-weight: 900; }
+#citylist .curCity .bottom a { float: right; display: inline-block; width: 0.25rem; height: 0.45rem; background: url(../images/city_cur_arrow.png) no-repeat center / 0.25rem 0.45rem; margin-top: 0.325rem; }
+
+#citylist .item { width: 100%; box-sizing: border-box;  border-top: 1px solid #ddd;  background: #fff;  }
+#citylist .item h2{ height: 0.975rem; width: 100%; box-sizing: border-box; line-height: 0.975rem; color: #666666; padding: 0 0.25rem; font-size: 0.4rem; color: #666666; font-weight: 900px;}
+#citylist .item h2 span { font-size: 0.3rem; color: #999999; }
+#citylist .item ul{ display: flex; flex-wrap: wrap; margin-right: -1px; border-top: 1px solid #ddd; }
+#citylist .item ul li a { display: block; width: 2.325rem; height: 1.125rem;  border-bottom: 1px solid #eeeeee; border-right: 1px solid #eeeeee; line-height: 1.1rem; text-align: center; color: #0088cc; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#citylist .citys .item ul li a { color: #555; }
