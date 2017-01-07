@@ -45,6 +45,8 @@ function change(hash){
 
 		khash = 'rlist';
 
+		module.coordinate(hash);
+
 	}
 
 	preModule = nowModule;
