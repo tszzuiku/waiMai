@@ -4,11 +4,21 @@ var rlistObj = $.extend(rlistObj,{
 	namr:'餐厅列表页',
 	dom: $('#rlist'),
 	init:function(){
-		
-		this.load_banner();
+
+		// 加载完banner部分，在加载商家列表
+				// this.coordinate();
 
 	},
 
+	// 当离开本页面，让滚动事件解除
+	leave:function(){
+
+		this.dom.hide();
+
+		$(window).unbind('scroll');
+
+	},
+	// 加载banner部分
 	load_banner:function(){
 
 		var _this = this;
@@ -53,12 +63,11 @@ var rlistObj = $.extend(rlistObj,{
 						str1 += '<li></li>';
 					}
 				}
-				
-				$('.banner-cons').append(str);
-				$('.banner-index').append(str1);
+				$('.banner-cons').html(str);
+				$('.banner-index').html(str1);
 
-				_this.loadSj();
-
+			
+			// 滑动banner事件	
 				_this.banner_change();
 			},
 			error:function(){
@@ -69,6 +78,7 @@ var rlistObj = $.extend(rlistObj,{
 		});
 
 	},
+	// 滑动banner事件	
 	banner_change:function(){
 
 		var _this = this;
@@ -85,12 +95,10 @@ var rlistObj = $.extend(rlistObj,{
 
 			_this.banX = $('.banner-cons').position().left;
 
-			// console.log(banX)
-
 			$('.banner-cons').on('touchmove',function(event){
 				var event = window.event || event;
 				var touch = event.touches[0];
-				// console.log(touch);
+
 				_this.moveX = touch.clientX;
 				var moveY = touch.clientY; 
 
@@ -104,9 +112,6 @@ var rlistObj = $.extend(rlistObj,{
 				else if (_this.moveLeft < -_this.clientWidth){
 					_this.moveLeft = -_this.clientWidth;
 				}
-	
-
-				console.log(_this.moveLeft);
 
 				$(this).css('left', _this.moveLeft + 'px');
 
@@ -114,8 +119,7 @@ var rlistObj = $.extend(rlistObj,{
 
 			$('.banner-cons').on('touchend',function(event){
 
-				// console.log(_this.disX,-_this.clientWidth/3)
-
+			// 对滑动距离进行判断，然后进行处理
 				if(_this.disX < -_this.clientWidth/3){
 
 					_this.page += 1;
@@ -137,6 +141,7 @@ var rlistObj = $.extend(rlistObj,{
 
 				_this.moveLeft = -_this.page*_this.clientWidth;
 
+			// 样式更新	
 				$('.banner-index').children('li').eq(_this.page).addClass('active').siblings().removeClass('active');
 
 				$('.banner-cons').animate({'left': _this.moveLeft + 'px'});
@@ -146,29 +151,82 @@ var rlistObj = $.extend(rlistObj,{
 		});
 
 	},
-	coordinate:function(hash){
-
-		this.x = hash.split('-')[1];
-		this.y = hash.split('-')[2];
-
-		this.flag = true;
-		this.index = 0;
-
-	},
-	loadSj:function(){
+	// 获取坐标
+	coordinate:function(){
+		// console.log(location.hash,location.hash.split['-']);
 
 		var _this = this;
+
+		this.index = 0;
+
+		var urlval = location.hash.split('-')[1];
+
+		var locObj =JSON.parse(Store('coo'));
+
+		// console.log(typeof locObj);
+
+		if(locObj){
+
+			this.load_banner();
+			this.loadSj(locObj);
+
+			return;
+		}
+
+		$.ajax({
+			url:'/v1/pois/' + urlval,
+			type:'GET',
+			success:function(res){
+
+				locObj = {
+					lat:res.latitude,
+					lon:res.longitude
+				};
+
+				Store('coo',locObj);
+
+				_this.load_banner();
+				_this.loadSj(locObj);
+
+			},
+			error:function(){
+				console.log('获取数据失败');
+			}
+		});
+	},
+	// 加载商家列表
+	loadSj:function(loc,onOff){
+
+		var _this = this;
+
+		loc = loc || JSON.parse(Store('coo'));
+
+		// console.log(!flag);   //undefined 去反是true。
+		// 进行判断，是否需要清空列表
+		if(!!onOff == false){
+
+			$('.rl-item-list').html('');
+		}
 
 		$.ajax({
 			url:'/shopping/restaurants',
 			data:{
-				latitude:this.x,
-				longitude:this.y,
+				latitude:loc.lat,
+				longitude:loc.lon,
 				offset:_this.index,
 				limit:20,
 				extras:'[activities]'
 			},
 			success:function(res){
+
+				if(res.length < 20){
+
+					$('.more p').html('没有更多商家了');
+				}
+				else{
+
+					$('.more p').html('正在载入更多商家...');
+				}
 
 				var str = '';
 				for(var i = 0; i < res.length; i++){
@@ -224,7 +282,7 @@ var rlistObj = $.extend(rlistObj,{
 				}
 
 				$('.rl-item-list').append(str);
-
+			// 调取滑到底部事件
 				_this.slideDown();
 				_this.flag = true;
 			},
@@ -233,10 +291,11 @@ var rlistObj = $.extend(rlistObj,{
 			}
 		});
 	},
-
+	// 滑到底部，更新新的商家
 	slideDown:function(){
 		var _this = this;
-		$(document).on('scroll',function(){
+		$(window).on('scroll',function(){
+			console.log('滚动事件触发')
 			var clientHeight = $(window).height();//获取窗口高度
 			var moreT = $(".more").offset().top;//获取滚动条高度，[0]是为了把jq对象转化为js对象
 			var scrollT = $("body").scrollTop();//滚动条距离顶部的距离
@@ -253,13 +312,10 @@ var rlistObj = $.extend(rlistObj,{
 
 					console.log(_this.index);
 
-					_this.loadSj();
+					_this.loadSj(null,true);
 				}
 			}
 		});
 	}
-
-
 })
 
-// console.log(citylistObj);

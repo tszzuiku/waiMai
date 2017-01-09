@@ -4,9 +4,9 @@ var addressObj = {
 	dom: $('#address'),
 	init:function(){
 
-		this.addEvent();
-
+		this.bindEvent();
 	},
+
 	changeCity:function(hash){
 		// 获取城市名称、城市id（给ajax使用）
 		this.cname = hash.split('-')[1] || '上海';
@@ -14,16 +14,48 @@ var addressObj = {
 		this.bid = hash.split('-')[3] || 289;
 
 		$('#cn').html(decodeURI(this.cname));
+		console.log('我执行了');
+		$('.cons-list').html('');
 
 	},
-	addEvent:function(){
+	bindEvent:function(){
 		var _this = this;
 		$btn1 = $('#address .btn').eq(0);
 		$btn2 = $('#address .btn').eq(1);
+
+		$('#keyword').on('keyup',function(){
+			console.log('meiyoul ')
+			if(!$(this).val()){
+
+				$('.cons-list').html('');
+
+			}
+		});
+
+		$('.cons-list').on('click','a',function(event){
+			console.log('我点击了');
+			event.preventDefault();
+
+			var locObj = {
+				lat:this.dataset.lat,
+				lon:this.dataset.lon
+			};
+
+			Store('coo',locObj);
+
+			window.location.href = '#rlist-' + this.dataset.geo;
+		});
+
+
 		// 饿了么搜索
 		$btn1.on('click',function (){
 			var kw = $('#address').find('input').eq(0).val();
 			// console.log(_this.cid);
+			if(!kw){
+
+				return;
+			}
+
 			$.ajax({
 				url:'/v1/pois',
 				data:{
@@ -38,7 +70,7 @@ var addressObj = {
 					for(var i = 0; i < res.length; i++){
 						// html += res[i].name + '<br/>' + res[i].address + '<br/>';
 
-						html += '<li><a href="#rlist-'+ res[i].latitude +'-'+ res[i].longitude +'"><span>'+ res[i].name +'</span><i>'+ res[i].address +'</i></a></li>';
+						html += '<li><a data-geo="'+ res[i].geohash +'" data-lat="'+ res[i].latitude +'" data-lon="'+ res[i].longitude +'" href="#rlist"><span>'+ res[i].name +'</span><i>'+ res[i].address +'</i></a></li>';
 					}
 					$('.cons-list').html(html);
 				}
@@ -49,9 +81,14 @@ var addressObj = {
 			// console.log(2);
 			var kw = $('#address').find('input').eq(0).val();
 
+			if(!kw){
+
+				return;
+			}
+
 			$.ajax({
 
-				url:'/a',
+				url:'/waimai',
 				data:{
 					qt:'poisug',
 					wd:kw,
@@ -70,11 +107,11 @@ var addressObj = {
 
 					for(var i = 0; i < res.s.length; i++){
 
-						html += res.s[i] + '<br/>';
+						html += '<li><a href="javascript:;">'+ res.s[i] +'</a></li>';
 
 					}
 
-					$('.cons').html(html);
+					$('.cons-list').html(html);
 
 				},
 				error:function(){

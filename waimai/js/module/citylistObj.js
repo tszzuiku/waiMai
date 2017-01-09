@@ -13,7 +13,7 @@ var citylistObj = $.extend(citylistObj,{
 	baiduCity:function(){
 		var _this = this;
 		$.ajax({
-			url:'/a?qt=getcitylist&format=1&t=1483686354642',
+			url:'/waimai?qt=getcitylist&format=1&t=1483686354642',
 			dataType:'json',
 			success:function(res){
 				

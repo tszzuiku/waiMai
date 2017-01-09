@@ -1,4 +1,15 @@
 
+// localStorage存取操作
+function Store(SpaceName,data){
+	if(data){
+	    localStorage.setItem(SpaceName,JSON.stringify(data));
+	}
+	else{
+		return localStorage.getItem(SpaceName);
+	}
+}
+
+// hash与各页面对象对应关系
 var Corresponding = {
 
 	'address':addressObj,
@@ -7,14 +18,16 @@ var Corresponding = {
 	'citylist':citylistObj
 }
 
+
 var preModule = null;
 var nowModule = null;
 var cacheMap = {}; //对应关系
 
+// 初始状态，刚打开页面
 var firsthash = location.hash.slice(1) || 'address';
-
 change(firsthash);
 
+// hash改变事件
 window.onhashchange = function (){
 
 	var hash = location.hash.slice(1);
@@ -22,6 +35,7 @@ window.onhashchange = function (){
 	change(hash);
 }
 
+// 状态改变
 function change(hash){
 
 	var khash = hash;
